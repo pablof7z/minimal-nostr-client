@@ -3,6 +3,8 @@
 import { useSubscribe } from "@nostr-dev-kit/ndk-hooks"
 import { NDKKind } from "@nostr-dev-kit/ndk"
 import { XanaduView } from "@/components/xanadu/xanadu-view"
+import { Loader2 } from "lucide-react"
+import ErrorBoundary from "@/components/error-boundary"
 
 export default function XanaduPage() {
   // Fetch initial events from the specified pubkey
@@ -23,7 +25,18 @@ export default function XanaduPage() {
         </div>
       </div>
 
-      <div className="absolute inset-0 pt-20">{events.length > 0 && <XanaduView initialEvents={events} />}</div>
+      <div className="absolute inset-0 pt-20">
+        <ErrorBoundary>
+          {events.length > 0 ? (
+            <XanaduView initialEvents={events} />
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <Loader2 className="h-8 w-8 animate-spin text-zinc-500" />
+              <span className="ml-2 text-zinc-500">Loading events...</span>
+            </div>
+          )}
+        </ErrorBoundary>
+      </div>
     </div>
   )
 }

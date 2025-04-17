@@ -16,6 +16,7 @@ export function XanaduView({ initialEvents }: XanaduViewProps) {
   const { ndk } = useNDK()
   const [isLoading, setIsLoading] = useState(true)
   const [eventLoader, setEventLoader] = useState<EventLoader | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
 
@@ -24,18 +25,31 @@ export function XanaduView({ initialEvents }: XanaduViewProps) {
 
   // Initialize event loader and load initial events
   useEffect(() => {
-    if (!ndk || initialEvents.length === 0) return
+    if (!ndk || !initialEvents || initialEvents.length === 0) return
 
     const loader = new EventLoader(ndk)
     setEventLoader(loader)
 
     const loadEvents = async () => {
-      setIsLoading(true)
-      await loader.loadInitialEvents(initialEvents)
-      setIsLoading(false)
+      try {
+        setIsLoading(true)
+        setError(null)
+        await loader.loadInitialEvents(initialEvents)
+      } catch (err) {
+        console.error("Error loading events:", err)
+        setError("Failed to load events. Please try again later.")
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     loadEvents()
+
+    // Cleanup function
+    return () => {
+      // Reset the store when unmounting
+      useXanaduStore.getState().reset()
+    }
   }, [ndk, initialEvents])
 
   // Update dimensions on resize
@@ -58,6 +72,7 @@ export function XanaduView({ initialEvents }: XanaduViewProps) {
       if (containerRef.current) {
         observer.unobserve(containerRef.current)
       }
+      observer.disconnect()
     }
   }, [])
 
@@ -68,6 +83,23 @@ export function XanaduView({ initialEvents }: XanaduViewProps) {
     if (!nodes.has(conn.target)) missingNodeIds.add(conn.target)
   })
 
+  // If there's an error, show error message
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-center p-6 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+          <p className="text-red-600 dark:text-red-400 mb-2">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Reload
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div ref={containerRef} className="relative w-full h-full overflow-hidden">
       {isLoading && nodes.size < 5 ? (
@@ -77,7 +109,7 @@ export function XanaduView({ initialEvents }: XanaduViewProps) {
         </div>
       ) : (
         <>
-          <D3Graph width={dimensions.width} height={dimensions.height} />
+          {nodes.size > 0 && <D3Graph width={dimensions.width} height={dimensions.height} />}
 
           {/* Stats display */}
           <div className="absolute top-4 left-4 bg-white dark:bg-zinc-800 rounded-lg shadow-md p-2 z-20 text-xs">

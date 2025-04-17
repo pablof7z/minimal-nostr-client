@@ -67,10 +67,10 @@
     "@nostr-dev-kit/ndk-hooks": "latest",
     "@use-gesture/react": "latest",
     "zustand": "latest",
-    "d3": "latest",
     "react-markdown": "latest",
     "remark-gfm": "latest",
-    "rehype-raw": "latest"
+    "rehype-raw": "latest",
+    "d3": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
