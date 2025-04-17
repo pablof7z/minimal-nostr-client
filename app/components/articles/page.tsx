@@ -45,7 +45,7 @@ export default function ArticlesPage() {
       const found = allArticles.find((article) => article.id === selectedArticleId)
       if (found) return found
     }
-    return featuredArticles?.[0];
+    return featuredArticles?.[0]
   }, [featuredArticles, selectedArticleId])
 
   // Handle article selection

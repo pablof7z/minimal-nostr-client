@@ -157,7 +157,7 @@ export function ZapButton({ event, className, showAmount = true }: ZapButtonProp
 
       // Set up the payment handler
       const lnPay = ({ pr }: { pr: string }) => {
-      console.log("pr", pr);
+        console.log("pr", pr)
         setPaymentRequest(pr)
         return new Promise<void>((resolve) => {
           // This promise doesn't resolve automatically
@@ -174,8 +174,8 @@ export function ZapButton({ event, className, showAmount = true }: ZapButtonProp
       })
 
       // Initiate the zap
-      zapper.zap();
-      console.log('zap');
+      zapper.zap()
+      console.log("zap")
 
       // Note: We don't set isZapping to false here because
       // the user needs to complete the payment

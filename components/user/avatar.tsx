@@ -5,7 +5,7 @@ import { useProfile } from "@nostr-dev-kit/ndk-hooks"
 
 interface UserAvatarProps {
   pubkey: string
-  size?: "sm" | "default" | "lg"
+  size?: "xs" | "sm" | "default" | "lg"
 }
 
 export default function UserAvatar({ pubkey, size = "default" }: UserAvatarProps) {
@@ -13,6 +13,7 @@ export default function UserAvatar({ pubkey, size = "default" }: UserAvatarProps
 
   // Determine size class
   const sizeClass = {
+    xs: "h-6 w-6",
     sm: "h-8 w-8",
     default: "h-10 w-10",
     lg: "h-16 w-16",

@@ -20,7 +20,7 @@ export function NDKProvider({ children }: NDKProviderProps) {
   const initNDK = useNDKInit()
   const sessions = useNDKSessions()
   const switchUser = useNDKSessionSwitch()
-  const startSession = useNDKSessions(s => s.startSession);
+  const startSession = useNDKSessions((s) => s.startSession)
 
   // Initialize NDK and load saved sessions on mount
   useEffect(() => {
@@ -62,13 +62,13 @@ export function NDKProvider({ children }: NDKProviderProps) {
     loadSavedSessions()
   }, [initNDK, sessions.addSession, sessions.switchToUser, switchUser])
 
-  const currentUser = useNDKCurrentUser();
+  const currentUser = useNDKCurrentUser()
 
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser) return
 
-    startSession(currentUser.pubkey, { follows: true, profile: true });
-  }, [currentUser?.pubkey]);
+    startSession(currentUser.pubkey, { follows: true, profile: true })
+  }, [currentUser?.pubkey])
 
   // Save sessions whenever they change
   useEffect(() => {

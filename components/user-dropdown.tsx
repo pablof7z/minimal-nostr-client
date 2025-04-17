@@ -35,7 +35,7 @@ export function UserDropdown() {
       const user = await signer.user() // Get user after signer is ready
 
       await ndkLogin(signer)
-      
+
       toast({
         title: "Login Successful",
         description: `Logged in as ${user.profile?.displayName || user.profile?.name || user.npub.substring(0, 10)}...`,
