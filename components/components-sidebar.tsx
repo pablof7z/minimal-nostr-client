@@ -20,6 +20,26 @@ const componentTypes = [
     kind: 7,
     href: "/components/reactions",
   },
+  {
+    name: "Zaps",
+    kind: 9735,
+    href: "/components/zaps",
+  },
+  {
+    name: "Highlights",
+    kind: 9802,
+    href: "/components/highlights",
+  },
+  {
+    name: "Articles",
+    kind: 30023,
+    href: "/components/articles",
+  },
+  {
+    name: "Session Manager",
+    kind: "utility",
+    href: "/components/session-manager",
+  },
 ]
 
 export function ComponentsSidebar() {
@@ -35,7 +55,7 @@ export function ComponentsSidebar() {
       <nav className="space-y-1">
         {componentTypes.map((type) => (
           <Link
-            key={type.kind}
+            key={type.href}
             href={type.href}
             className={cn(
               "flex items-center justify-between px-3 py-2 rounded-md text-sm transition-colors",

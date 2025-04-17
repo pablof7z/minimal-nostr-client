@@ -5,6 +5,7 @@ import { EventCard } from "@/components/nostr/event-card"
 import { useSubscribe } from "@nostr-dev-kit/ndk-hooks"
 import { NDKKind } from "@nostr-dev-kit/ndk"
 import { CodeBlock } from "@/components/code-block"
+import { Repeat } from "lucide-react"
 
 export default function TextNotesPage() {
   // Fetch a single event from the specified pubkey
@@ -43,8 +44,28 @@ export default function TextNotesPage() {
               <CodeBlock code={`<EventCard event={event} />`} language="tsx" />
               <p className="mt-2 text-sm text-muted-foreground">
                 The EventCard component accepts an NDKEvent object and displays it with the author's profile
-                information, content, and timestamp. It also supports interactions like replies, likes, and sharing.
+                information, content, and timestamp. It also supports interactions like replies, likes, zaps, and
+                sharing.
               </p>
+
+              <h4 className="text-sm font-semibold mb-2 mt-4">Repost & Quote</h4>
+              <p className="text-sm text-muted-foreground flex items-center gap-2">
+                <Repeat className="h-4 w-4 text-zinc-500" />
+                Click the repost button to either repost directly or quote the post with your own comment
+              </p>
+              <CodeBlock
+                code={`// Simple repost
+const repostEvent = event.repost()
+repostEvent.publish()
+
+// Quote post
+const quoteEvent = new NDKEvent(ndk)
+quoteEvent.kind = NDKKind.Text
+quoteEvent.content = \`Your comment\n\nnostr:\${event.encode()}\`
+quoteEvent.publish()`}
+                language="tsx"
+                className="mt-2"
+              />
             </div>
           </div>
         </div>
