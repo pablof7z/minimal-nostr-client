@@ -70,7 +70,6 @@
     "d3": "latest",
     "react-markdown": "latest",
     "remark-gfm": "latest",
-    "remark-footnotes": "latest",
     "rehype-raw": "latest"
   },
   "devDependencies": {

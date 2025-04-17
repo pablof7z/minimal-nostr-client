@@ -10,7 +10,6 @@ import { formatDistanceToNow } from "date-fns"
 import { Clock } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
-import remarkFootnotes from "remark-footnotes"
 import rehypeRaw from "rehype-raw"
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
@@ -290,7 +289,7 @@ export function ArticleView({
       {/* Article content */}
       <div className="prose dark:prose-invert prose-zinc max-w-none">
         <ReactMarkdown
-          remarkPlugins={[remarkGfm, [remarkFootnotes, { inlineNotes: true }]]}
+          remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
           components={{
             code({ node, inline, className, children, ...props }) {

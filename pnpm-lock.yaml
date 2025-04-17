@@ -170,9 +170,6 @@ importers:
       rehype-raw:
         specifier: latest
         version: 7.0.0
-      remark-footnotes:
-        specifier: latest
-        version: 5.0.0
       remark-gfm:
         specifier: latest
         version: 4.0.1
@@ -2515,10 +2512,6 @@ packages:
 
   rehype-raw@7.0.0:
     resolution: {integrity: sha512-/aE8hCfKlQeA8LmyeyQvQF3eBiLRGNlfBJEvWH7ivp9sBqs7TNqBL5X3v157rM4IFETqDnIOO+z5M/biZbo9Ww==}
-
-  remark-footnotes@5.0.0:
-    resolution: {integrity: sha512-bmRA8Xel4YZA5PphUOdamG3Cf3BshoGZQlwVqF+bv0Ei1/b9ETOSyoKtpVAk8zIRJ2dAwio2HFnbC9wjLmy02A==}
-    deprecated: 'Deprecated: use `remark-gfm`'
 
   remark-gfm@4.0.1:
     resolution: {integrity: sha512-1quofZ2RQ9EWdeN34S79+KExV1764+wCUGop5CPL1WGdD0ocPpu91lzPGbwWMECpEpd42kJGQwzRfyov9j4yNg==}
@@ -5418,8 +5411,6 @@ snapshots:
       '@types/hast': 3.0.4
       hast-util-raw: 9.1.0
       vfile: 6.0.3
-
-  remark-footnotes@5.0.0: {}
 
   remark-gfm@4.0.1:
     dependencies:
