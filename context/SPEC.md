@@ -1,0 +1,1 @@
+A very simple nostr client with a bunch of different components

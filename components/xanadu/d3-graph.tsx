@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, useCallback } from "react"
+import { useEffect, useRef, useState, useCallback, useMemo } from "react"
 import * as d3 from "d3"
 import { useXanaduStore } from "@/lib/xanadu/store"
 import { EventNodeCard } from "./event-node-card"
@@ -90,7 +90,9 @@ export function D3Graph({ width, height }: D3GraphProps) {
   const simulationRef = useRef<d3.Simulation<D3Node, D3Link> | null>(null)
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null)
 
-  const nodes = useXanaduStore((state) => Array.from(state.nodes.values()))
+  // Subscribe to the nodes Map instance, then derive array locally to stabilize getSnapshot
+  const nodeMap = useXanaduStore((state) => state.nodes)
+  const nodes = useMemo(() => Array.from(nodeMap.values()), [nodeMap])
   const connections = useXanaduStore((state) => state.connections)
   const selectedNodeId = useXanaduStore((state) => state.selectedNodeId)
   const openCardIds = useXanaduStore((state) => state.openCardIds)
@@ -248,6 +250,15 @@ export function D3Graph({ width, height }: D3GraphProps) {
 
       // Restart the simulation with a low alpha to avoid dramatic changes
       simulationRef.current.alpha(0.3).restart()
+      // After layout settles, update store positions once
+      simulationRef.current.on("end", () => {
+        // Commit final node positions to the store
+        d3Nodes.forEach((d) => {
+          if (d.hasEvent && d.x !== undefined && d.y !== undefined) {
+            setNodePosition(d.id, d.x, d.y)
+          }
+        })
+      })
 
       // Draw links
       const link = g
@@ -392,12 +403,6 @@ export function D3Graph({ width, height }: D3GraphProps) {
 
         nodeGroup.attr("transform", (d) => `translate(${d.x},${d.y})`)
 
-        // Update store with new positions for real nodes only
-        d3Nodes.forEach((d) => {
-          if (d.x !== undefined && d.y !== undefined && mounted) {
-            setNodePosition(d.id, d.x, d.y)
-          }
-        })
       })
     } catch (error) {
       console.error("Error setting up D3 graph:", error)
