@@ -3,7 +3,6 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
-import { NDKProvider } from "@/components/providers/ndk"
 import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({
@@ -33,10 +32,9 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${mono.variable}`} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <NDKProvider>
-            {children}
-            <Toaster />
-          </NDKProvider>
+          <NDKHeadless />
+          {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
@@ -45,3 +43,4 @@ export default function RootLayout({
 
 
 import './globals.css'
+import NDKHeadless from "@/components/nostr/ndk-headless"
